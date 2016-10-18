@@ -2,13 +2,14 @@ package threadPool;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class ThreadPool {// 需要改进，让线程池可以按批次完成任务
-	private int COMMONSIZE = 10;
-	private int MAXSIZE = 20;
+	private int COMMONSIZE = 100;
+	private int MAXSIZE = 200;
 	private int TASK_CRITICAL_SIZE = 100;
-	private ArrayList<Thread> pool;
+	private List<Thread> pool;
 	private Queue<Runnable> tasks;
 	private boolean openProcessingBatch = false;// 默认关闭批处理模式
 	private Integer[] finishTasksNum = new Integer[1];// 批处理模式下才有用
@@ -104,7 +105,7 @@ public class ThreadPool {// 需要改进，让线程池可以按批次完成任�
 		}
 	}
 
-	public void addTasksInbatches(ArrayList<Runnable> taskList, int loopTimes) {// 一批任务需要多次执行，完成一批任务才能执行下一次迭代
+	public void addTasksInbatches(List<Runnable> taskList, int loopTimes) {// 一批任务需要多次执行，完成一批任务才能执行下一次迭代
 		openProcessingBatch = true;// 打开批处理模式
 		synchronized (finishTasksNum) {
 			finishTasksNum[0] = taskList.size();
