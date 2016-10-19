@@ -111,16 +111,7 @@ public class ThreadPool {// 需要改进，让线程池可以按批次完成任�
 			finishTasksNum[0] = taskList.size();
 		}
 		for (int i = 0; i < loopTimes; ++i) {
-			synchronized (finishTasksNum) {
-				while (finishTasksNum[0] < taskList.size()) {// 任务列表中的任务还没有完全完成
-					try {
-						finishTasksNum.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				finishTasksNum[0] = 0;
-			}
+			
 			System.out.println("第" + i + "轮迭代");
 			for (int j = 0; j < taskList.size(); ++j) {// 加入这一批任务
 				synchronized (tasks) {
@@ -130,6 +121,16 @@ public class ThreadPool {// 需要改进，让线程池可以按批次完成任�
 					}
 					tasks.notify();
 				}
+			}
+			synchronized (finishTasksNum) {
+				while (finishTasksNum[0] < taskList.size()) {// 任务列表中的任务还没有完全完成
+					try {
+						finishTasksNum.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				finishTasksNum[0] = 0;
 			}
 		}
 	}
