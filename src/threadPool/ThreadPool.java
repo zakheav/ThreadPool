@@ -107,9 +107,6 @@ public class ThreadPool {// 需要改进，让线程池可以按批次完成任�
 
 	public void addTasksInbatches(List<Runnable> taskList, int loopTimes) {// 一批任务需要多次执行，完成一批任务才能执行下一次迭代
 		openProcessingBatch = true;// 打开批处理模式
-		synchronized (finishTasksNum) {
-			finishTasksNum[0] = taskList.size();
-		}
 		for (int i = 0; i < loopTimes; ++i) {
 			
 			System.out.println("第" + i + "轮迭代");
